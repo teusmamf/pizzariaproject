@@ -6,7 +6,13 @@ const customerb2bSchema = new mongoose.Schema({
     name: { type: String, required: true },
     cpf: { type: String, required: true, length: 11 },
     phone: { type: String, required: true },
-    company_id:{ type:String, required:true }
+    company_id:{ type:String, required:true },
+    role:{
+        type:String, 
+        required:true,
+        enum:['USER_B2B', 'FINAL_CLIENT', 'FINANCE_USER', 'KITCHEN_USER'],
+        default:"USER_FINANCE"
+    }
 });
 
-module.exports = mongoose.model('Customer_b2b', customerb2bSchema);
+module.exports = mongoose.model('user_finance', customerb2bSchema);

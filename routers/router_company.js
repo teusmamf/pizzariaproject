@@ -8,10 +8,10 @@ const {
     deleteCompany
 } = require('../controllers/company');
 
-router.post('/create_customer_b2b', createCompany);
-router.get('/all_customers_b2b', getallcompanies);
-router.get('/get_customer_b2b/:id', getcompanybyId);
-router.patch('/update_customer_b2b/:id', updateCompany);
-router.delete('/delete_customer_b2b/:id', deleteCompany);
+router.post('/create_company', createCompany);
+router.get('/all_companies', getallcompanies);
+router.get('/get_company_id/:id', getcompanybyId);
+router.patch('/update_company/:id', updateCompany);
+router.delete('/delete_company/:id', deleteCompany);
 
 module.exports = router;
