@@ -1,13 +1,28 @@
 const UserKitchen = require('../models/user_kitchen');
+const errorMessages = require('../error_messages/error_messages');
+const bcrypt = require('bcrypt');
 
 async function createUserKitchen(req, res) {
     try {
-        const userKitchen = new UserKitchen(req.body);
-        await userKitchen.save();
-        res.status(201).send(userKitchen);
+        const {cpf,password} = req.body;
+        if(!testCPF(cpf)){
+            return res.status(400).json({error:errorMessages.NOT_VALID_CPF});
+        }
+
+        const hashPassword = await bcrypt.hash(req.body.password, 10);
+
+        const user_kitchen = new UserKitchen({
+            ...req.body,
+            password:hashPassword
+        });
+
+        await user_kitchen.save();
+        res.status(201).send({message: errorMessages.CREATED_USER , user_kitchen});
+      
     } catch (error) {
         console.log(error);
         res.status(400).send(error);
+        
     }
 }
 

@@ -1,13 +1,29 @@
 const UserFinance = require('../models/user_finance');
+const errorMessages = require('../error_messages/error_messages');
+const bcrypt = require('bcrypt');
+
 
 async function createUserFinance(req, res) {
     try {
-        const userFinance = new UserFinance(req.body);
-        await userFinance.save();
-        res.status(201).send(userFinance);
+        const {cpf,password} = req.body;
+        if(!testCPF(cpf)){
+            return res.status(400).json({error:errorMessages.NOT_VALID_CPF});
+        }
+
+        const hashPassword = await bcrypt.hash(req.body.password, 10);
+
+        const user_finance = new UserFinance({
+            ...req.body,
+            password:hashPassword
+        });
+
+        await user_finance.save();
+        res.status(201).send({message: errorMessages.CREATED_USER , user_finance});
+      
     } catch (error) {
         console.log(error);
         res.status(400).send(error);
+        
     }
 }
 

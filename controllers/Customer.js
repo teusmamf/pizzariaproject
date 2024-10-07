@@ -1,17 +1,26 @@
 const Customer = require('../models/Customer');
 const {testCPF} = require('../utils/validators');
 const errorMessages = require('../error_messages/error_messages');
+const bcrypt = require('bcrypt');
+
 
 async function createCustomer(req, res) {
     try {
-        const {cpf} = req.body;
+        const {cpf,password} = req.body;
         if(!testCPF(cpf)){
             return res.status(400).json({error:errorMessages.NOT_VALID_CPF});
         }
-        const customer = new Customer(req.body);
-        await customer.save();
-        res.status(201).send(customer);
 
+        const hashPassword = await bcrypt.hash(req.body.password, 10);
+
+        const customer = new Customer({
+            ...req.body,
+            password:hashPassword
+        });
+
+        await customer.save();
+        res.status(201).send({message: errorMessages.CREATED_USER , customer});
+      
     } catch (error) {
         console.log(error);
         res.status(400).send(error);
