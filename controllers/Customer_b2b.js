@@ -2,30 +2,39 @@ const Customer_b2b = require('../models/Customer_b2b');
 const Customer = require('../models/Customer_b2b');
 const bcrypt = require('bcrypt');
 const errorMessages = require('../error_messages/error_messages');
+const {testCPF} = require('../utils/validators');
 
 async function createCustomerB2B(req, res) {
     try {
-        const {cpf,password} = req.body;
-        if(!testCPF(cpf)){
-            return res.status(400).json({error:errorMessages.NOT_VALID_CPF});
+        const { cpf, password } = req.body;
+
+        if (!testCPF(cpf)) {
+            return res.status(400).json({ error: errorMessages.NOT_VALID_CPF });
         }
 
-        const hashPassword = await bcrypt.hash(req.body.password, 10);
+        
+        if (!password) {
+            return res.status(400).json({ error: 'Password is required' });
+        }
 
+        
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        
         const customer_b2b = new Customer_b2b({
             ...req.body,
-            password:hashPassword
+            password: hashPassword
         });
 
         await customer_b2b.save();
-        res.status(201).send({message: errorMessages.CREATED_USER , customer_b2b});
+        res.status(201).send({ message: errorMessages.CREATED_USER, customer_b2b });
       
     } catch (error) {
         console.log(error);
         res.status(400).send(error);
-        
     }
 }
+
 
 async function getAllCustomersB2B(req, res) {
     try {
