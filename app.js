@@ -8,7 +8,7 @@ const user_finance_routes = require('./routers/router_user_finance');
 const user_kitchen = require('./routers/router_user_kitchen');
 const auth_routes = require('./routers/router_auth');
 const authenticateToken = require('./middleware/middleware_auth');
-
+const cors = require('cors');
 
 require('dotenv').config();
 const app = express();
