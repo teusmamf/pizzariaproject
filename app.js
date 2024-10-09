@@ -8,17 +8,14 @@ const user_finance_routes = require('./routers/router_user_finance');
 const user_kitchen = require('./routers/router_user_kitchen');
 const auth_routes = require('./routers/router_auth');
 const authenticateToken = require('./middleware/middleware_auth');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+
 
 require('dotenv').config();
 const app = express();
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use('/api', createProxyMiddleware({ 
-    target: 'http://localhost:5500/', 
-    changeOrigin: true,
-}));
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/customers',  authenticateToken ,customerRoutes);
 app.use('/api/customersb_b2b' ,customer_b2broutes);
