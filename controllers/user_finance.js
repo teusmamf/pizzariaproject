@@ -29,7 +29,7 @@ async function createUserFinance(req, res) {
 
 async function getallUserFinance(req, res) {
     try {
-        const usersFinance = await UserFinance.find().select('-id');
+        const usersFinance = await UserFinance.find().select('_id id name cpf address phone role');
         res.status(200).send(usersFinance);
     } catch (error) {
         res.status(500).send(error);

@@ -28,7 +28,7 @@ async function createUserKitchen(req, res) {
 
 async function getalluserKitchen(req, res) {
     try {
-        const usersKitchen = await UserKitchen.find().select('-id');
+        const usersKitchen = await UserKitchen.find().select('_id id name cpf address phone role');
         res.status(200).send(usersKitchen);
     } catch (error) {
         res.status(500).send(error);

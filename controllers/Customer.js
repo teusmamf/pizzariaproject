@@ -30,7 +30,7 @@ async function createCustomer(req, res) {
 
 async function getAllCustomers(req, res) {
     try {
-        const customers = await Customer.find().select('-id');
+        const customers = await Customer.find().select('_id id name cpf address phone role');
         res.status(200).send(customers);
     } catch (error) {
         res.status(500).send(error);
