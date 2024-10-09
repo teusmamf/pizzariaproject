@@ -16,7 +16,7 @@ const app = express();
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use('/api', createProxyMiddleware({ 
-    target: 'http://127.0.0.1:5500/', 
+    target: 'http://localhost:5500/', 
     changeOrigin: true,
 }));
 app.use(bodyParser.json());
