@@ -15,6 +15,10 @@ const app = express();
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+app.use('/api', createProxyMiddleware({ 
+    target: 'http://127.0.0.1:5500/', 
+    changeOrigin: true,
+}));
 app.use(bodyParser.json());
 app.use('/api/customers',  authenticateToken ,customerRoutes);
 app.use('/api/customersb_b2b' ,customer_b2broutes);
